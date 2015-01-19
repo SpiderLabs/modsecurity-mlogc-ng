@@ -99,7 +99,7 @@ char *load_section(const char section, struct audit_log_entry_t *a)
     memset(marking, '\0', strlen(a->mark) + 1 + 4);
     snprintf(marking, strlen(a->mark) + 4, "%s%c--", a->mark, section);
     
-    // Find the start point.
+    /* Find the start point. */
     while (a->buf_len > count + strlen(marking) &&
             strncmp(a->buf + count, marking, strlen(marking)) != 0)
     {
@@ -113,7 +113,7 @@ char *load_section(const char section, struct audit_log_entry_t *a)
  
     start = count + strlen(marking) + 1;
 
-    // Find the end of the section
+    /* Find the end of the section */
     count = start;
     while (a->buf_len > count + strlen(a->mark) &&
             strncmp(a->buf + count, a->mark, strlen(a->mark)) != 0)
@@ -132,13 +132,11 @@ char *load_section(const char section, struct audit_log_entry_t *a)
     memset(section_buf, '\0', end - start + 1);
     strncpy(section_buf, a->buf + start, end - start);
 
-    //fprintf(stdout, "* wheee: section: %c start: %d -- end: %d \n", section, start, end);
     return section_buf;
 }
 
 int parse_section_a(unsigned char *buf, struct audit_log_entry_t *a)
 {
-    // [20/Jun/2014:08:15:11 --0500] U6Qz3cCo8AoAAD@WnCEAAAAV 37.58.100.181 51557 192.168.240.10 80
     int start = 0;
     int count = 0;
     char *date = NULL;
@@ -224,10 +222,8 @@ int parse_section_a(unsigned char *buf, struct audit_log_entry_t *a)
     a->id = id;
     a->date = date;
     a->origin = origin;
-    //a->origin_port = atoi(origin_port);
     a->origin_port = origin_port;
     a->dest = dest;
-    //a->dest_port = atoi(dest_port);
     a->dest_port = dest_port;
 
 }

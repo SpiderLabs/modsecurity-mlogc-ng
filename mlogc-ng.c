@@ -1,5 +1,4 @@
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -16,15 +15,17 @@
  *
  */
 
-
-// FIXME: getopt long should handle this in a near future.
-#define PATH "logs-tmp"
-// FIXME: Check if that value makes sense. Use bytes here.
-#define MAX_FILE_SIZE 1024*1024
- 
-
+#ifdef VERBOSE
+int verbose = 1;
+#else
 int verbose = 0;
+#endif
+
+#ifdef DEBUG
+int debug = 1;
+#else
 int debug = 0;
+#endif 
 
 void help (void) 
 {
@@ -34,8 +35,9 @@ void help (void)
 int main (int argc, char **argv)
 {
     int res = 0;
-    struct configuration_t *config = NULL;
     char *config_file = NULL;
+    struct pipeline_t pipeline;
+    struct pipeline_element_t *input;
 
     if (argc < 2)
     {
@@ -43,35 +45,28 @@ int main (int argc, char **argv)
         goto missing_arguments;
     }
 
-    res = read_configuration_file(config_file, &config);
+    config_file = argv[1];
+    res = read_configuration_file(config_file, &pipeline);
     if (res)
     {
-        p("Problems reading the configuration " \
+        e("Problems reading the configuration " \
                 "file: %s\n", config_file);
         goto bad_configuration;
     }
 
-    /* pipe line chain should be created here. */
-    res = pipeline_build(config);
-    if (res)
+    input = pipeline.elements;
+    if (input == NULL)
     {
-        goto bad_pipeline;
+        e("Missing pipeline.\n");
+        goto bad_configuration;
     }
 
-    if (config->batch_operation)
-    {
-        v("Starting batch operation enumeration...\n");
-        res = start_batch_operation(config);
-    }
-    else
-    {
-        v("Starting pipeline operation...\n");
-        //res = start_pipeline_operation(config);
-    }
+    p("Starting pipeline, input element: '%s'\n", input->name); 
 
-bad_pipeline:
+    input->process(input, NULL);
+
 bad_configuration:
-    clean_configuration(&config);
 missing_arguments:
     return res;
 }
+

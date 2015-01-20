@@ -1,0 +1,36 @@
+{  
+  "mlogc_pipeline":[  
+    {  
+      "read_from_filesystem":{  
+        "directory":"/tmp/logs"
+      }
+    },
+    {  
+      "check_persistence":{  
+        "store_database":"/tmp/logs-database/"
+      }
+    },
+    {  
+      "transform_to_json":{  
+
+      }
+    },
+    {  
+      "send_to_server":{  
+        "host":"https://server1",
+        "username":"test",
+        "password":"test",
+        "validate_certificate_chain":"true",
+	"number_of_clients": 10
+      }
+    },
+    {  
+      "send_to_server":{  
+        "host":"https://server2",
+        "username":"test",
+        "password":"test",
+        "validate_certificate_chain":"true"
+      }
+    }
+  ]
+}

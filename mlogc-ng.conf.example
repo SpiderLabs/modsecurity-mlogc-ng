@@ -1,0 +1,24 @@
+{  
+  "mlogc_pipeline":[  
+    {  
+      "read_from_filesystem":{  
+        "directory":"/tmp/audit-logs"
+      }
+    },
+    {  
+      "send_to_server":{  
+        "host":"https://localhost:8443/rpc/auditLogReceiver",
+        "username":"test",
+        "password":"test",
+        "validate_certificate_chain":"false",
+	"number_of_clients": 10
+      }
+    },
+    {
+      "dump": {
+        "id": "true",
+	"audit_file": "true"
+      }
+    }
+  ]
+}

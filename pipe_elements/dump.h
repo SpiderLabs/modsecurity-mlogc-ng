@@ -10,6 +10,7 @@ struct dump_config_t {
     int id;
     int date;
     int dest;
+    int audit_file;
 };
 
 int dump_process (struct pipeline_element_t *, struct audit_log_entry_t *);

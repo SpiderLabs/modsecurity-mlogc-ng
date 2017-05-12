@@ -8,6 +8,7 @@
 #include "configuration.h"
 
 #include "read_from_filesystem.h"
+#include "filesystem-walker.h"
 
 
 int read_from_filesystem_call_entry_cb(struct audit_log_entry_t *audit_log,

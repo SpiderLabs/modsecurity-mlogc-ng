@@ -8,7 +8,7 @@
 #include "persistence.h"
 #include "pipeline.h"
 
-inline int persistence_file_exists(const char *file)
+int persistence_file_exists(const char *file)
 {
     struct stat buffer;
     return (stat (file, &buffer) == 0);

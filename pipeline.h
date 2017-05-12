@@ -24,5 +24,7 @@ struct pipeline_t {
 
 struct pipeline_element_t *create_pipe_element(const char *, const yajl_val *,
 		struct pipeline_t *);
+int add_pipe_element(struct pipeline_t *, struct pipeline_element_t *);
+int pipeline_process(struct pipeline_t *, struct audit_log_entry_t *);
 
 #endif

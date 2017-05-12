@@ -303,7 +303,7 @@ int load_buffer(char *buf, struct audit_log_entry_t *audit_log)
 
     char number[20];
     memset(number, '\0', 20);
-    snprintf(number, 20, "%d", strlen(buf));
+    snprintf(number, 20, "%lu", strlen(buf));
 
     audit_log->mark = mark;
     audit_log->buf = buf;

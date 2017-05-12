@@ -87,7 +87,7 @@ failed:
     return res;
 }
 
-int open_directory_recursive(unsigned char *path, void *audit_log_entry_cb,
+int open_directory_recursive(const unsigned char *path, void *audit_log_entry_cb,
         struct read_from_filesystem_config_t *conf)
 {
     DIR *d;

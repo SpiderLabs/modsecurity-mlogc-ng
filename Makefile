@@ -1,6 +1,8 @@
-CC=gcc
-CFLAGS=-I. -Ipipe_elements/. -Iinput_elements/. -Wno-pointer-sign -Wno-variadic-macros -O0 -g
-LIBS=-lyajl -lcurl -lssl -lcrypto
+CC?=gcc
+CFLAGS+=-I. -Ipipe_elements/. -Iinput_elements/. -Wno-pointer-sign -Wno-variadic-macros -O0 -g
+LIBS+=-lyajl -lcurl -lssl -lcrypto
+
+all: mlogc-ng
 
 %.o: %.c
 	$(CC) -c -o $@ $< $(CFLAGS) 
@@ -17,7 +19,7 @@ OBJS = \
        pipe_elements/send_to_server.o
 
 mlogc-ng: $(OBJS)
-	gcc -o $@ $^ $(CFLAGS) $(LIBS)
+	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
 clean:
-	rm *.o pipe_elements/*.o input_elements/*.o mlogc-ng
+	rm -f *.o pipe_elements/*.o input_elements/*.o mlogc-ng

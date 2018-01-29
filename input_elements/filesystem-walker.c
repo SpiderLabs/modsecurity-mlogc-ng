@@ -122,8 +122,24 @@ int open_directory_recursive(const unsigned char *path, void *audit_log_entry_cb
         full_path_len = snprintf(full_path, full_path_len + 1, "%s/%s", path,
                 d_name);
 
+        int is_dir = 0;
+#ifdef _DIRENT_HAVE_D_TYPE
+        if (entry->d_type != DT_UNKNOWN && entry->d_type != DT_LNK) {
+            is_dir = (entry->d_type == DT_DIR);
+        } else
+#endif
+        {
+            struct stat stbuf;
+            if (stat(full_path, &stbuf) != 0) {
+                e("Failed to determine type for: %s\n", full_path);
+                res = -1;
+                goto failed;
+            }
+            is_dir = S_ISDIR(stbuf.st_mode);
+        }
+
         /* if it is a dir (different from "." or ".." we want to jump in. */
-        if (entry->d_type & DT_DIR)
+        if (is_dir)
         {
             if (strcmp (d_name, "..") != 0 && strcmp (d_name, ".") != 0)
             {
@@ -133,7 +149,7 @@ int open_directory_recursive(const unsigned char *path, void *audit_log_entry_cb
         }
 
         /* if it is a file, let see inside. */
-        if (!(entry->d_type & DT_DIR))
+        if (!is_dir)
         {
             inspect_file(full_path, audit_log_entry_cb, conf);
         }
